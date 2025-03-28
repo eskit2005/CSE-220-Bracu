@@ -1,0 +1,267 @@
+//Singly linked list
+Task1:
+
+
+public static Node alternateMerge( Node head1, Node head2 ){
+        Node temp=head1;
+        Node temp1=head2;
+        if(head1==null) return head2;
+
+        if(head2==null) return head1;
+
+        while(temp!=null && temp1!=null){
+            Node point1=temp.next;
+            Node point2=temp1.next;
+
+            temp.next=temp1;
+            temp=point1;
+
+            temp1.next=point1;
+            temp1=point2;
+
+        }
+        if(temp==null){
+            temp=temp1;
+        }
+
+        return head1;
+
+    }
+Task2:
+
+public static Node wordDecoder( Node head ){
+       int length=0;
+       Node current=head;
+       while(current!=null){
+        current=current.next;
+        length++;
+       }
+       int multiples=13%length;
+       Node lastnode=null;
+       current=head;
+       int size=0;
+       while(current!=null){
+        if(size%multiples==0 && size>0){
+            Node temp=new Node(current.elem,lastnode);
+            lastnode=temp;
+        }
+        current=current.next;
+        size++;
+       }
+       Node dummy=new Node(null,lastnode);
+       return dummy;
+    }
+Task3:
+
+public static Node idGenerator(Node head1, Node head2, Node head3) {
+
+        Node current=head1.next;
+        Node previous=head1;
+        head1.next=null;
+        while(current!=null){
+            Node temp=current.next;
+            current.next=previous;
+            previous=current;
+            current=temp;
+        }
+        head1=previous;
+        while(previous.next!=null) previous=previous.next;
+
+
+        Node temp=head2;
+        Node temp1=head3;
+        while(temp!=null){
+            int sum=((int)temp.elem +(int) temp1.elem)%10;
+            Node new_node=new Node(sum);
+            previous.next=new_node;
+            previous=previous.next;
+            temp=temp.next;
+            temp1=temp1.next;
+        }
+
+        return head1; 
+    }
+
+
+// doubly linked list 
+
+Q1:
+
+public class Patient{
+
+    public Integer id;
+    public String name;
+    public Integer age;
+    public String bloodGroup;
+    public Patient next; //this points to the next patient
+    public Patient prev; //this points to the previous patient
+
+    public Patient(Integer id,String name,Integer age,String bloodGroup,Patient next,Patient prev){
+        this.id=id;
+        this.name=name;
+        this.age=age;
+        this.bloodGroup=bloodGroup;
+        this.next=next;
+        this.prev=prev;
+
+    }
+
+}
+Q2:
+
+
+public class WRM {
+    Patient dh;
+
+    //The constructor is already created for you
+    public WRM() {
+        dh = new Patient(null, null, null, null, null, null);
+        dh.next = dh;
+        dh.prev = dh;
+    }
+
+    public void registerPatient(int id, String name, int age, String bloodgroup) {
+        Patient newest=new Patient(id,name,age,bloodgroup,null,dh);
+        if(dh.next==dh){
+            dh.next=newest;
+            dh.prev=newest;
+            newest.next=dh;
+            newest.prev=dh;
+        }
+        else{
+            Patient temp=dh.next;
+            dh.next=newest;
+            newest.next=temp;
+            temp.prev=newest;
+            newest.prev=dh;
+
+        }
+
+    }
+
+    public void servePatient() {
+        if(!canDoctorGoHome()){
+            Patient temp=dh.prev;
+            System.out.println(temp.name+ " is served");
+            Patient temp1=temp.prev;
+            temp.next=null;
+            temp.prev=null;
+            temp1.next=dh;
+            dh.prev=temp1;
+        }
+        else {
+            System.out.println("No patients needs to be served");
+        }
+
+    }
+
+    public void showAllPatient() {
+        Patient current=dh.prev;
+        if(dh.next==dh) System.out.println("No patients need to serve");
+        while(current!=dh) {
+            System.out.println(current.id);
+            current = current.prev;
+        }
+
+    }
+
+    public boolean canDoctorGoHome() {
+        return dh.next == dh;
+    }
+
+    public void cancelAll() {
+        dh.next=dh;
+        dh.prev=dh;
+
+    }
+
+
+    public void reverseTheLine() {
+        Patient current=dh.next;
+        while(current!=dh) {
+            Patient temp = current.next;
+            Patient temp1 = current.prev;
+            current.prev = temp;
+            current.next = temp1;
+            current = current.prev;
+        }
+        Patient temp=dh.next;
+        dh.next=dh.prev;
+        dh.prev=temp;
+    }
+
+}
+
+
+Q3 and Q4:
+
+import java.util.Scanner;
+
+public class WRMTester {
+    public static void main(String[] args) {
+        WRM wrm = new WRM();
+        System.out.println(" Welcome to Waiting Room Management System ");
+        System.out.println("==Choose an option ==");
+
+        System.out.println("1.registerPatient()");
+        System.out.println("2.servePatient()");
+        System.out.println("3.showAllPatients()");
+        System.out.println("4.canDoctorGoHome()");
+        System.out.println("5.cancelAll()");
+        System.out.println("6.reverseTheLine()");
+        System.out.println("7.Exit");
+
+        Scanner input = new Scanner(System.in);
+        int chosen = input.nextInt();
+        input.nextLine();  // To clear the newline after reading integer input
+
+        while (chosen != 7) {
+            if (chosen == 1) {
+                System.out.println("Executing Register Patient...");
+                System.out.print("Enter id: ");
+                int id = input.nextInt();
+                input.nextLine();  // Clear the newline after reading the integer
+                System.out.print("Enter name: ");
+                String name = input.nextLine();  // Now correctly reads the name
+                System.out.print("Enter age: ");
+                int age = input.nextInt();
+                input.nextLine();  // Clear the newline after reading the integer
+                System.out.print("Enter bloodgroup: ");
+                String group = input.nextLine();  // Now correctly reads the group
+                wrm.registerPatient(id, name, age, group);
+                System.out.println("Successful registration of the patient");
+            } else if (chosen == 2) {
+                wrm.servePatient();
+            } else if (chosen == 3) {
+                System.out.println("The ids of the patients to serve are as follows :");
+                wrm.showAllPatient();
+            } else if (chosen == 4) {
+                if(!wrm.canDoctorGoHome()) System.out.println("No");
+                else if(wrm.canDoctorGoHome())System.out.println("yes");
+
+            } else if (chosen == 5) {
+                wrm.cancelAll();
+                System.out.println("Success");
+            } else if (chosen == 6) {
+                wrm.reverseTheLine();
+                System.out.println("Success");
+            }
+
+            System.out.println();
+            System.out.println(" Welcome to Waiting Room Management System ");
+            System.out.println("==Choose an option ==");
+            System.out.println("1.registerPatient()");
+            System.out.println("2.servePatient()");
+            System.out.println("3.showAllPatients()");
+            System.out.println("4.canDoctorGoHome()");
+            System.out.println("5.cancelAll()");
+            System.out.println("6.reverseTheLine()");
+            System.out.println("7.Exit");
+            chosen = input.nextInt();
+            input.nextLine();  // Clear the newline after reading integer input
+        }
+        if (chosen == 7) {
+            System.out.println("Thanks for using our service");
+        }
+    }
+}
