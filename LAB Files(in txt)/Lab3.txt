@@ -1,0 +1,159 @@
+Task1:
+
+public static void walkZigzag( Integer[][] matrix ){
+
+       int row_len=matrix.length;
+       int col_len=matrix[0].length;
+       boolean isblack=true;
+       for(int i=0;i<col_len;i++){
+
+           if(i%2==0){
+               for(int j=0;j<row_len;j++){
+                   if(isblack) {
+                       int value = matrix[j][i];
+                       System.out.print(value + " ");
+                       isblack=false;
+                   }
+                   else{
+                       isblack=true;
+                   }
+
+               }
+           }
+           else{
+               for(int j=row_len-1;j>=0;j--){
+                   if(isblack) {
+                       int value = matrix[j][i];
+                       System.out.print(value + " ");
+                       isblack=false;
+                   }
+                   else{
+                       isblack=true;
+                   }
+               }
+           }
+
+           System.out.println();
+       }
+
+    }
+Task2:
+
+ public static Integer[] decryptMatrix(Integer[][] matrix) {
+        int row_len = matrix.length;
+        int col_len = matrix[0].length;
+        Integer[] decrypt = new Integer[col_len - 1];
+
+        for (int i = 0; i < col_len - 1; i++) {
+            int sum1 = 0;
+            int sum2 = 0;
+
+            for (int j = 0; j < row_len; j++) {
+                sum1 += matrix[j][i];
+                //this points to the elements of the next column
+                sum2+=matrix[j][i+1];
+            }
+            decrypt[i] = sum1 - sum2;
+        }
+        return decrypt;
+    }
+Task3:
+
+
+public static Integer rowRotation( Integer examWeek, String[][] matrix ){
+
+        int row_len=matrix.length;
+        int col_len=matrix[0].length;
+
+        String [][] storing=new String[examWeek-1][col_len];
+
+        //Storing
+        int steps=examWeek-1;
+        int temp=0;
+        for(int k=row_len-(steps);k<row_len;k++){
+            storing[temp]=matrix[k];
+            temp++;
+        }
+        //Rotating 
+        for(int i=0;i<examWeek-1;i++){
+            for(int j=row_len-1;j>=steps;j--){
+                matrix[j]=matrix[j-steps];
+            }
+        }
+
+        //Dumping values
+        for(int i=0;i<steps;i++){
+            matrix[i]=storing[i];
+        }
+        int valid_row=-1;
+        for(int i=0;i<row_len;i++){
+            for(int j=0;j<col_len;j++){
+                if(matrix[i][j].equals("AA")){
+                    valid_row=i+1;
+                    break;
+                }
+            }
+        }
+        Arr.print2D(matrix);
+
+
+        return valid_row;
+    }
+Task4:
+
+public static Integer[][] compressMatrix( Integer[][] matrix ){
+        int row_len=matrix.length;
+        int col_len=matrix[0].length;
+
+        Integer [][] result=new Integer[row_len/2][col_len/2];
+        int row_pointer=0,col_pointer=0;
+
+        for(int i=0;i<row_len;i+=2){
+            col_pointer=0;
+            int y=1;
+            for(int x=0;x<col_len;x+=2,y+=2){
+                int temp=matrix[i][x];
+                int temp1=matrix[i][y];
+                int temp2=matrix[i+1][x];
+                int temp3=matrix[i+1][y];
+                int sum=temp+temp1+temp2+temp3;
+                result[row_pointer][col_pointer]=sum;
+                col_pointer++;
+            }
+            row_pointer++;
+        }
+        return result;
+    }
+
+Task5:
+
+    // Complete this method so that it gives the Expected Output
+    public static void playGame(Integer[][] arena) {
+        int row_len = arena.length;
+        int col_len = arena[0].length;
+        int sum = 0;
+
+
+        for (int i = 0; i < row_len; i++) {
+            for (int j = 0; j < col_len; j++) {
+                if (arena[i][j] % 50 == 0 && arena[i][j] != 0) { 
+
+                    if (i > 0 && arena[i - 1][j] == 2) sum += 1;
+                    if (i < row_len - 1 && arena[i + 1][j] == 2) sum += 1;
+
+                    if (j > 0 && arena[i][j - 1] == 2)  sum += 1;
+
+                    if (j < col_len - 1 && arena[i][j + 1] == 2)  sum += 1;
+                }
+            }
+        }
+        sum*=2;
+
+
+        System.out.print("Points Gained: " + sum + ". ");
+        if (sum >= 10) {
+            System.out.print("Your team has survived the game.");
+        } else {
+            System.out.print("Your team is out.");
+        }
+    }

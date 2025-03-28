@@ -1,0 +1,126 @@
+Task1:
+public static Integer[] mergeSortedArray(Integer[] arr1, Integer[] arr2) {
+        int k=0;//first array
+        int z=0;//second array
+        Integer [] result=new Integer[arr1.length+arr2.length];
+        for(int i=0;i<result.length;i++){
+        if(k==arr1.length){
+            result[i]=arr2[z];
+            z++;
+        }
+        else if(z==arr2.length){
+            result[i]=arr1[k];
+            k++;
+        }
+        else{
+            int temp=arr1[k];
+            int temp1=arr2[z];
+            if(temp>temp1){
+               result[i]=temp1;
+               z++;
+            }
+            else if(temp>temp1){
+                result[i]=temp;
+                k++;
+
+            }
+            else{
+                result[i]=temp;
+                k++;
+
+            }
+        }
+       }
+
+      return result;
+    }
+Task2:
+public static void mostWater( Integer[] height ){
+        int area=0;
+        for(int i=0;i<height.length;i++){
+
+            for(int j=i+1;j<height.length;j++){
+                int temp=0;
+                if(height[i]>height[j]){
+                    temp=height[j](j-i);
+                }
+                else if(height[j]>height[i]) temp=height[i](j-i);
+                else{
+                    temp=height[i]*(j-i);
+                }
+                if(temp>area) area=temp;
+
+            }
+        }
+            System.out.println(area);
+
+
+    }
+Task3:
+
+ public static String checkSimilar( Node building1, Node building2 ){
+
+        Node head1=building1;
+        Node head2=building2;
+        Node temp1=head1;
+        Node temp2=head2;
+        boolean similar=true;
+        while(temp1!=null){
+            if(temp1.elem==temp2.elem) ;
+            else{
+                similar=false;
+                break;
+            }
+            if(temp1.next==null && temp2.next!=null){
+                similar=false;
+                break;
+            }
+            if(temp2.next==null && temp1.next!=null){
+                similar=false;
+                break;
+            }
+            temp1=temp1.next;
+            temp2=temp2.next;
+        }
+        if(!similar) return "Not Similar";
+        else return "Similar";
+    }
+Task4:
+
+
+ public static Boolean assembleCongaLine(Node head){
+
+        boolean valid=true;
+        int value=0;
+        Node current=head;
+        while(current!=null){
+           int temp=(int)current.elem;
+           if(temp<value){
+               valid=false;
+               break;
+           }
+           value=temp;
+           current=current.next;
+
+        }
+        return valid;
+    }
+Task5:
+
+ public static int sumDist(Node head, Integer[] distArr) {
+        int sum=0;
+
+        for(int i=0;i<distArr.length;i++){
+
+            Node current=head;
+
+            for(int j=0;j<distArr[i];j++){
+                current=current.next;
+                if(current==null) break;
+            }
+            if(current!=null)  sum+=(int)current.elem;
+
+        }
+
+        return sum; 
+    }
