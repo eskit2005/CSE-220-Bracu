@@ -1,0 +1,92 @@
+            Task1
+
+    public static Integer lowestCommonAncestor( BSTNode root, Integer x, Integer y ){
+       if(root==null){
+        return null;
+       }
+       int first=(int)x;
+       int second=(int)y;
+       if((first<root.elem && second<root.elem)){
+        return lowestCommonAncestor(root.left, x, y);
+       }
+       else if(first>root.elem && second>root.elem){
+        return lowestCommonAncestor(root.right, x, y);
+       }
+
+       return root.elem;
+    }
+
+
+            Task2
+    
+    public static String findPath( BSTNode root, Integer key ){
+       
+        return findPath(root, key,"");
+    }
+    private static String findPath( BSTNode root, Integer key,String path ){
+        
+        if(root==null){
+            path="No Path Found";
+            return path;
+        }
+        if(root.elem==key){
+            path+=(int)root.elem;
+            return path;
+        }
+        else if(root.elem>key){
+            path+=root.elem+ " ";
+            return findPath(root.left, key,path);
+        }
+        else {
+            path+=+root.elem+ " ";
+            return findPath(root.right, key,path);
+        }
+        
+    }
+
+
+            Task3
+    
+    public static Integer sumOfLeaves(BSTNode root, Integer sum) {
+        if (root == null) {
+            return sum;
+        }
+        
+        if (isleaf(root)) {
+            sum += root.elem;
+            return sum;
+        }
+        
+        sum = sumOfLeaves(root.left, sum);
+        sum = sumOfLeaves(root.right, sum);
+        
+        return sum;
+    }
+
+
+    public static boolean isleaf(BSTNode root){
+        if(root==null){
+            throw new NullPointerException("Empty tree");
+        }
+        if(root.left==null && root.right==null){
+            return true;
+        }
+        return false;
+    }
+
+            Task4
+
+    public static Integer mirrorSum( BSTNode root ){
+        return mirrorSum(root.left,root.right,0);
+        
+    }
+    private static Integer mirrorSum(BSTNode Left,BSTNode Right,int sum){
+        if((Left==null || Right==null)){
+            return sum;
+        }
+        sum+=Left.elem+Right.elem;
+        sum=mirrorSum(Left.left,Right.right,sum);
+        sum=mirrorSum(Left.right,Right.left,sum);
+        return sum;
+        
+    }

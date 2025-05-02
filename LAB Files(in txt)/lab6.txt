@@ -1,0 +1,90 @@
+              Task1
+    public static BTNode convertMirror( BTNode root ){
+        if(root==null) return null;
+        BTNode temp=root.left;
+        root.left=root.right;
+        root.right=temp;
+        convertMirror(root.left);
+        convertMirror(root.right);
+        return root; 
+    }
+
+
+            Task2
+
+    public static void smallestLevel( BTNode root, Integer[] levelArray, int lvl ){
+      if(root==null) return;
+
+      if(levelArray[lvl]==null){
+        levelArray[lvl]=(Integer)root.elem;
+      }
+      else{
+        if((Integer)root.elem<levelArray[lvl]){
+            levelArray[lvl]=(Integer)root.elem;
+        }
+      }
+      lvl++;
+      smallestLevel(root.left, levelArray, lvl);
+      smallestLevel(root.right, levelArray, lvl);
+    }
+
+            Task3
+    
+    public static Integer sumTree( BTNode root ){
+            return sumTree(root,0);
+           
+        }
+    private static Integer sumTree(BTNode root, int lvl){
+        if(root==null) return 0;
+        
+        if(lvl==0){
+            return (Integer)root.elem +sumTree(root.left,lvl+1)+ sumTree(root.right,lvl+1);
+        }
+        return ((Integer)root.elem % lvl)+sumTree(root.left,lvl+1)+ sumTree(root.right,lvl+1);
+    }
+
+            Task4
+    
+    public static void swapChild( BTNode root, int lvl, int M ){
+        if(root==null || lvl>=M) return;
+        BTNode temp=root.left;
+        
+        root.left=root.right;
+        root.right=temp;
+        swapChild(root.left, lvl+1, M);
+        swapChild(root.right, lvl+1, M);
+    }
+
+            Task5
+    
+    public static Integer subtractSummation( BTNode root ){
+        int sum1=sub_tree(root.left);
+        int sum2=sub_tree(root.right);
+
+        return sum1-sum2; 
+    }
+    private static Integer sub_tree(BTNode root){
+        if(root==null) return 0;
+
+        return (Integer)root.elem + sub_tree(root.left)+sub_tree(root.right);
+    }
+
+            Task6
+    
+    public static Integer levelSum( BTNode root ){
+       return levelsum(root,1);
+        
+    }
+    private static Integer levelsum(BTNode root, int lvl){
+        if(root==null) return 0;
+        if(lvl%2!=0){
+            return (-1*(Integer)root.elem)+levelsum(root.left,lvl+1)+levelsum(root.right,lvl+1);
+        }
+        else{
+            return (Integer)root.elem+levelsum(root.left,lvl+1)+levelsum(root.right,lvl+1);
+        
+        }
+        
+    }
+    
+    
