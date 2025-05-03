@@ -1,0 +1,255 @@
+                Task1
+
+    public class MinHeap{
+        private Integer[] list;
+        private int size=0;
+        public MinHeap(int capacity){
+            list=new Integer[capacity];
+        }
+        private void resize(int index){
+            Integer[] list1=new Integer[index*2];
+            for(int i=0;i<list.length;i++){
+                list1[i]=list[i];
+            }
+            list=list1;
+        }
+        public void insert(int value){
+            if(size>=list.length) resize(size);
+            list[size]=value;
+            swim(size,value);
+            size++;
+        }
+
+
+        private void swim(int index, int value){
+            if(index==0){
+                return;
+            }
+            
+            int parent=(index-1)/2;
+            if(value<list[parent]){
+                list[index]=list[parent];
+                list[parent]=value;
+                swim(parent,value);
+            }
+        }
+
+        public Integer remove(){
+            if(size==0){
+                System.out.println("The array is empty");
+                return null;
+            }
+            int temp=list[0];
+            list[0]=list[size-1];
+            list[--size]=null;
+            sink(0);
+            return temp;
+            
+        }
+        private void sink(int index){
+            if(index>=size) return;
+            int min_index=index;
+            int left=(index*2)+1;
+            int right=(index*2)+2;
+            if(left<size && list[min_index]>list[left]){
+                min_index=left;
+            }
+            if(right<size && list[min_index]>list[right]){
+                min_index=right;
+            }
+            
+            if(min_index!=index){
+                int temp=list[index];
+                list[index]=list[min_index];
+                list[min_index]=temp;
+                sink(min_index);
+            }
+        }
+        public Integer Extract_Min(){
+            return remove();
+        }
+
+        public Integer[] sort(){
+        Integer[] list1=new Integer[size];
+        int i=0;
+        while(size!=0){
+            list1[i]=remove();
+            i++;
+        }
+        return list1;
+
+        }
+    }
+
+
+                Task2
+
+    public class MaxHeap{
+        private Integer[] list;
+        private int size=0;
+        public MaxHeap(int capacity){
+            list=new Integer[capacity];
+        }
+
+
+        private void resize(int index){
+            Integer[] list1=new Integer[index*2];
+            for(int i=0;i<list.length;i++){
+                list1[i]=list[i];
+            }
+            list=list1;
+        }
+
+        public void insert(int value){
+            if(size>=list.length) resize(size);
+            list[size]=value;
+            swim(size);
+            size++;
+        }
+        private void swim(int index){
+            if(index<=0){
+                return;
+            }
+
+            int parent=(index-1)/2;
+
+            if(list[index]>list[parent]){
+                int temp=list[index];
+                list[index]=list[parent];
+                list[parent]=temp;
+
+                swim(parent);
+            }
+        }
+        public Integer remove(){
+            if(size==0){
+                System.out.println("The heap is empty");
+                return null;
+            }
+
+            int temp=list[0];
+            list[0]=list[size-1];
+            list[--size]=null;
+            sink(0);
+            return temp;
+        }
+
+        private void sink(int index){
+            if(index>=size){
+                return;
+            }
+            int max_index=index;
+            int left=(index*2)+1;
+            int right=(index*2)+2;
+            if(left<size && list[index]<list[left]){
+                max_index=left;
+            }
+            else if(right<size && list[index]<list[right]){
+                max_index=right;
+            }
+
+            if(max_index!=index){
+                int temp=list[index];
+                list[index]=list[max_index];
+                list[max_index]=temp;
+                sink(max_index);
+
+            }
+            
+        }
+        public Integer Extract_Max(){
+            return remove();
+        }
+
+        public Integer[] sort(){
+            Integer[] list1=new Integer[size];
+            int i=0;
+            while(size!=0){
+                list1[i]=remove();
+                i++;
+        }
+        return list1;
+        }
+        `
+    }
+
+        Task3 and Task4 were done in a single class
+
+
+    public class Task3_And_Task4{
+
+        private static MinHeap populate_zeros(MinHeap heap,int m){
+            while(m>0){
+                heap.insert(0);
+                m--;
+            }
+            return heap;
+        }
+
+        public static MinHeap Task3(int[] tasks,int m,MinHeap heap){
+            heap=populate_zeros(heap, m);
+            for(int i=0;i<tasks.length;i++){
+                int temp=heap.Extract_Min();
+                temp+=tasks[i];
+                heap.insert(temp);
+            }
+            return heap;
+        }
+
+        public static int[] Task4(int[] nums,int k){
+            MaxHeap heap=new MaxHeap(nums.length);
+            for(int i=0;i<nums.length;i++){
+                heap.insert(nums[i]);
+            }
+
+            int[] result=new int[k];
+            int index=0;
+            while(k>0){
+                result[index]=heap.remove();
+                index++;
+                k--;
+            }
+            return result;
+
+        }
+    }
+
+
+        Below is the tester class for task3 and Task4
+    
+    import java.util.Arrays;
+
+    public class Heap_Tester {
+        public static void main(String[]args){
+            System.out.println("----------- Task3 ----------------");
+            System.out.println();
+            System.out.println("SAMPLE GIVEN INPUT: ");
+            System.out.println("tasks=[2,4,7,1,6]");
+            System.out.println("m = 4");
+            System.out.println("SAMPLE OUTPUT\n[2,4,7,7]");
+            System.out.println("MY OWN OUTPUT: ");
+            int[] tasks={2,4,7,1,6};
+            MinHeap final_heap=Task3_And_Task4.Task3(tasks,4,new MinHeap(4));
+            Integer[] result=final_heap.sort();
+            System.out.println(Arrays.toString(result));
+
+            System.out.println();
+            System.out.println("----------- Task4 ----------------");
+            System.out.println();
+            System.out.println("SAMPLE GIVEN INPUT: ");
+            System.out.println("nums=[4,10,2,8,6,7]");
+            System.out.println("k = 3");
+            System.out.println("SAMPLE OUTPUT\n[10,8,7]");
+            System.out.println("MY OWN OUTPUT: ");
+            int [] nums={4,10,2,8,6,7};
+            int[] answer=Task3_And_Task4.Task4(nums, 3);
+            System.out.println(Arrays.toString(answer));
+
+        }
+        
+    }
+
+        
+
+
+
